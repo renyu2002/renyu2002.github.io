@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="875" viewBox="0 0 1400 875">
+  <rect width="100%" height="100%" fill="#eef2ff"/>
+  <rect x="24" y="24" width="1352" height="827" rx="24" fill="#ffffff" stroke="#c7d2fe" stroke-width="2" stroke-dasharray="10 8"/>
+  <text x="50%" y="46%" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#3559d6">Adaptive Refinement</text>
+  <text x="50%" y="56%" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#697386">Coarse mesh → Trigger → Local subdivision → Gaussian split</text>
+</svg>
