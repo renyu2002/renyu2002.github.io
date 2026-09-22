@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Academic homepage: SoftGS, differentiable elastoplastic simulation, deformable Gaussian splatting, and physics-aware local Gaussian refinement." />
+  <title>Yu Ren | SoftGS</title>
+
+  <style>
+    :root{
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --text:#202736;
+      --muted:#687386;
+      --line:#e3e7ef;
+      --accent:#3559d6;
+      --accent2:#6d7ce8;
+      --soft:#eef2ff;
+      --maxw:1080px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+                  "Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;
+      color:var(--text);
+      background:var(--bg);
+      line-height:1.72;
+    }
+
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .container{
+      width:min(var(--maxw),calc(100% - 36px));
+      margin:0 auto;
+    }
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:20;
+      background:rgba(246,247,251,.93);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--line);
+    }
+
+    nav{
+      min-height:64px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:20px;
+    }
+
+    .brand{
+      font-size:17px;
+      font-weight:800;
+      color:var(--text);
+    }
+
+    .nav-links{
+      display:flex;
+      flex-wrap:wrap;
+      gap:18px;
+      font-size:14px;
+    }
+
+    .hero{padding:76px 0 44px}
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.48fr .82fr;
+      gap:42px;
+      align-items:center;
+    }
+
+    .eyebrow{
+      display:inline-block;
+      padding:6px 11px;
+      border-radius:999px;
+      background:var(--soft);
+      color:var(--accent);
+      font-weight:750;
+      font-size:13px;
+      margin-bottom:16px;
+    }
+
+    h1{
+      margin:0 0 14px;
+      font-size:clamp(40px,6vw,68px);
+      line-height:1.05;
+      letter-spacing:-1.5px;
+    }
+
+    .subtitle{
+      margin:0 0 22px;
+      color:var(--muted);
+      font-size:20px;
+    }
+
+    .lead{
+      max-width:760px;
+      font-size:17px;
+      margin:0 0 20px;
+    }
+
+    .contact-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px 18px;
+      margin-top:22px;
+      font-size:15px;
+    }
+
+    .buttons{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:24px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:11px 17px;
+      border-radius:10px;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--text);
+      font-weight:750;
+      box-shadow:0 2px 8px rgba(0,0,0,.03);
+    }
+
+    .btn.primary{
+      background:var(--accent);
+      color:white;
+      border-color:var(--accent);
+    }
+
+    .visual{
+      min-height:335px;
+      padding:30px;
+      border:1px solid var(--line);
+      border-radius:24px;
+      background:linear-gradient(145deg,#edf1ff,#fff);
+      box-shadow:0 14px 36px rgba(25,39,78,.07);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .visual-inner{
+      width:100%;
+      min-height:270px;
+      padding:26px;
+      border:1px dashed #b9c3df;
+      border-radius:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      color:var(--muted);
+    }
+
+    section{padding:34px 0}
+
+    .section-title{
+      margin:0 0 18px;
+      font-size:29px;
+      letter-spacing:-.4px;
+    }
+
+    .section-note{
+      margin:-8px 0 22px;
+      color:var(--muted);
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:26px;
+      box-shadow:0 10px 26px rgba(20,34,66,.045);
+    }
+
+    .research-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:18px;
+    }
+
+    .research-grid h3,
+    .mini h3{
+      margin:0 0 8px;
+      font-size:20px;
+    }
+
+    .tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:14px;
+    }
+
+    .tag{
+      padding:5px 10px;
+      border:1px solid #dfe5ef;
+      border-radius:999px;
+      background:#f4f6f9;
+      font-size:13px;
+      color:#3f4a5d;
+    }
+
+    .project-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:18px;
+      margin-bottom:18px;
+    }
+
+    .project-title{
+      margin:0;
+      font-size:27px;
+      line-height:1.3;
+    }
+
+    .status{
+      white-space:nowrap;
+      padding:6px 10px;
+      border-radius:999px;
+      background:var(--soft);
+      color:var(--accent);
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .pipeline{
+      margin-top:24px;
+      display:grid;
+      grid-template-columns:repeat(6,1fr);
+      gap:9px;
+    }
+
+    .step{
+      min-height:88px;
+      padding:12px 10px;
+      border:1px solid var(--line);
+      border-radius:12px;
+      background:#fafbfc;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      font-size:13px;
+      line-height:1.45;
+    }
+
+    .grid-3{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
+      margin-top:22px;
+    }
+
+    .mini{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fff;
+      padding:18px;
+    }
+
+    .equation{
+      margin-top:18px;
+      padding:15px 18px;
+      border-radius:12px;
+      background:#f8fafc;
+      border:1px solid var(--line);
+      font-family:"Times New Roman",serif;
+      font-size:18px;
+      overflow-x:auto;
+    }
+
+    ul{padding-left:21px;margin-bottom:0}
+    li{margin:7px 0}
+
+    .note{
+      margin-top:16px;
+      padding:10px 12px;
+      border:1px solid #fed7aa;
+      border-radius:10px;
+      background:#fff7ed;
+      color:#7c2d12;
+      font-size:13px;
+    }
+
+    footer{
+      margin-top:36px;
+      padding:30px 0 50px;
+      border-top:1px solid var(--line);
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    @media(max-width:860px){
+      .hero-grid,.research-grid{grid-template-columns:1fr}
+      .grid-3{grid-template-columns:1fr}
+      .pipeline{grid-template-columns:repeat(2,1fr)}
+      nav{align-items:flex-start;flex-direction:column;padding:14px 0}
+    }
+
+    @media(max-width:520px){
+      .pipeline{grid-template-columns:1fr}
+      h1{font-size:42px}
+      .hero{padding-top:48px}
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="container">
+    <nav>
+      <a class="brand" href="#top">Yu Ren</a>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#research">Research</a>
+        <a href="#softgs">SoftGS</a>
+        <a href="#method">Method</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow">Computer Graphics · Differentiable Simulation · Gaussian Splatting</span>
+
+        <h1>Yu Ren</h1>
+
+        <p class="subtitle">
+          Graduate Student · ShanghaiJiaoTongUniversity
+        </p>
+
+        <p class="lead">
+          I work on physically based deformable Gaussian splatting and differentiable
+          elastoplastic simulation. My current thesis project, <strong>SoftGS</strong>,
+          combines a differentiable elastoplastic formulation with physics-aware local
+          Gaussian refinement for high-quality, controllable simulation and rendering
+          of permanent deformation.
+        </p>
+
+        <div class="contact-row" id="contact">
+          <span><strong>Email:</strong> renyu2002@sjtu.edu.cn</span>
+          <span><strong>Institution:</strong> ShanghaiJiaoTongUniversity</span>
+        </div>
+
+        <div class="buttons">
+          <a class="btn primary" href="mailto:renyu2002@sjtu.edu.cn">Email Me</a>
+          <a class="btn" href="#softgs">View SoftGS</a>
+        </div>
+
+        <div class="note">
+          Before publishing, replace <strong>Yu Ren</strong>,
+          <strong>ShanghaiJiaoTongUniversity</strong>, and
+          <strong>renyu2002@sjtu.edu.cn</strong> with your real information.
+        </div>
+      </div>
+
+      <div class="visual">
+        <div class="visual-inner">
+          <div>
+            <strong>Recommended Figure</strong><br><br>
+            Put your SoftGS teaser here:<br>
+            Gaussian scene → deformation → local refinement → final rendering
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="container">
+      <h2 class="section-title">About Me</h2>
+      <div class="card">
+        <p>
+          My research focuses on the intersection of
+          <strong>computer graphics</strong>,
+          <strong>differentiable physics</strong>,
+          <strong>elastoplastic simulation</strong>, and
+          <strong>3D Gaussian Splatting</strong>.
+          I am particularly interested in how explicit Gaussian representations can be
+          coupled with physically meaningful deformation models while preserving
+          rendering quality, editability, and stable optimization gradients.
+        </p>
+
+        <p>
+          My current work studies permanent shape authoring and deformable Gaussian
+          representations, with an emphasis on continuous elastic-to-plastic transition,
+          irreversible plastic memory, and adaptive local refinement driven by physical
+          deformation rather than only image-space reconstruction error.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="research">
+    <div class="container">
+      <h2 class="section-title">Research Focus</h2>
+      <p class="section-note">
+        Current research directions connected to SoftGS.
+      </p>
+
+      <div class="research-grid">
+        <div class="card">
+          <h3>Differentiable Elastoplastic Simulation</h3>
+          <p>
+            Designing smooth and differentiable constitutive transitions for permanent
+            deformation while retaining a strict elastic domain and irreversible plastic history.
+          </p>
+          <div class="tags">
+            <span class="tag">D-EP</span>
+            <span class="tag">Elastoplasticity</span>
+            <span class="tag">Differentiable Physics</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Deformable Gaussian Splatting</h3>
+          <p>
+            Coupling Gaussian position, rotation, scale, and local deformation with
+            physically based simulation so that rendering and mechanics evolve consistently.
+          </p>
+          <div class="tags">
+            <span class="tag">3DGS</span>
+            <span class="tag">Physical Deformation</span>
+            <span class="tag">Explicit Representation</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Physics-aware Local Refinement</h3>
+          <p>
+            Refining the simulation mesh and associated Gaussians only where deformation,
+            plasticity, contact, or approximation error indicates that additional local
+            resolution is needed.
+          </p>
+          <div class="tags">
+            <span class="tag">Adaptive Refinement</span>
+            <span class="tag">Gaussian Splitting</span>
+            <span class="tag">Mesh-Gaussian Binding</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Permanent Shape Authoring</h3>
+          <p>
+            Enabling controllable deformation in which objects can elastically recover
+            while retaining physically meaningful residual shape after plastic deformation.
+          </p>
+          <div class="tags">
+            <span class="tag">Shape Editing</span>
+            <span class="tag">Residual Deformation</span>
+            <span class="tag">Graphics Applications</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="softgs">
+    <div class="container">
+      <h2 class="section-title">Graduate Thesis Project</h2>
+
+      <div class="card">
+        <div class="project-head">
+          <div>
+            <h3 class="project-title">SoftGS</h3>
+            <p style="margin:8px 0 0;color:var(--muted);">
+              Differentiable Elastoplastic Simulation with Physics-Aware Local Gaussian Refinement
+            </p>
+          </div>
+          <span class="status">Ongoing</span>
+        </div>
+
+        <p>
+          <strong>SoftGS</strong> is my current thesis project on physically based
+          deformable Gaussian splatting. The system combines the
+          <strong>D-EP</strong> elastoplastic model with a
+          <strong>mesh-driven local Gaussian subdivision strategy</strong>.
+          The goal is to support visually clear and physically meaningful permanent
+          deformation while allocating additional geometric and Gaussian resolution only
+          to regions that require it.
+        </p>
+
+        <p>
+          The project treats simulation and rendering as a coupled representation:
+          local physical deformation updates the bound Gaussians, while local mesh
+          refinement triggers corresponding Gaussian splitting and rebinding so that
+          geometry, physics, and rendering remain aligned.
+        </p>
+
+        <div class="pipeline">
+          <div class="step">1. Gaussian Scene + Simulation Mesh</div>
+          <div class="step">2. Mesh–Gaussian Binding</div>
+          <div class="step">3. D-EP Elastoplastic Simulation</div>
+          <div class="step">4. Detect High-deformation Regions</div>
+          <div class="step">5. Local Mesh Refinement + Gaussian Split</div>
+          <div class="step">6. Rebind & Render</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="method">
+    <div class="container">
+      <h2 class="section-title">Method Overview</h2>
+
+      <div class="grid-3">
+        <div class="mini">
+          <h3>D-EP</h3>
+          <p>
+            A differentiable elastoplastic formulation with a bounded smooth plastic
+            activation transition, an exact sub-yield elastic region, and irreversible
+            plastic state storage.
+          </p>
+        </div>
+
+        <div class="mini">
+          <h3>Local Subdivision</h3>
+          <p>
+            Regions with high stress, plastic strain, contact response, or deformation
+            error can be locally refined rather than increasing simulation resolution globally.
+          </p>
+        </div>
+
+        <div class="mini">
+          <h3>Gaussian Refinement</h3>
+          <p>
+            Gaussians associated with refined mesh regions are split and inherit visual
+            and physical attributes, then are rebound to the refined local geometry.
+          </p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:18px">
+        <h3 style="margin-top:0">Physical Representation</h3>
+        <p>
+          The simulation follows a finite-deformation elastoplastic decomposition in which
+          the local deformation gradient is separated into elastic and plastic components:
+        </p>
+
+        <div class="equation">
+          F = F<sub>e</sub> F<sub>p</sub>
+        </div>
+
+        <p>
+          The deformation state is propagated to the Gaussian representation through
+          local mesh–Gaussian binding. After local subdivision, newly created Gaussians
+          inherit appearance and state information from their parent region and are
+          rebound using the refined local geometry.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="interests">
+    <div class="container">
+      <h2 class="section-title">Research Interests</h2>
+      <div class="card">
+        <ul>
+          <li>Differentiable elastoplastic simulation</li>
+          <li>3D Gaussian Splatting and deformable Gaussian representations</li>
+          <li>Physics-based animation and simulation</li>
+          <li>Permanent deformation authoring and shape editing</li>
+          <li>Adaptive mesh refinement and local Gaussian subdivision</li>
+          <li>Mesh–Gaussian coupling and explicit scene representations</li>
+          <li>Physically grounded graphics optimization</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2 class="section-title">Contact</h2>
+      <div class="card">
+        <p>
+          I am interested in research on differentiable simulation, elastoplasticity,
+          Gaussian splatting, and physically based deformable representations.
+        </p>
+        <p>
+          <strong>Name:</strong> Yu Ren<br>
+          <strong>Email:</strong>
+          <a href="mailto:renyu2002@sjtu.edu.cn">renyu2002@sjtu.edu.cn</a><br>
+          <strong>Institution:</strong> ShanghaiJiaoTongUniversity
+        </p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    © 2026 Yu Ren · Academic Homepage
+  </div>
+</footer>
+</body>
+</html>
